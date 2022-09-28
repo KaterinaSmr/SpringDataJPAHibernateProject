@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th = "http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:method="PATCH" th:object="${person}" th:action="@{/people/{id}(id=${person.getId()})}">
+    <div>
+        <label for="name">Имя</label>
+        <input type="text" th:field="*{name}" id="name">
+        </br>
+        <label for="year">Год рождения</label>
+        <input type="text" th:field="*{year}" id="year">
+        </br>
+        <hr/>
+        <input type="submit" value="Сохранить">
+    </div>
+</form>
+</body>
+</html>
