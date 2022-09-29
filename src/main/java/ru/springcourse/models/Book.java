@@ -1,21 +1,32 @@
 package ru.springcourse.models;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "book")
 public class Book {
+    @Id
+    @Column(name="id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(name="title")
     private String title;
+    @Column(name="author")
     private String author;
+    @Column(name="year")
     private int year;
-    private int assignedto;
+    @ManyToOne
+    @JoinColumn(name="assignedto", referencedColumnName = "id")
+    private Person assignedto;
 
     public Book() {
     }
 
-    public Book(int id, String title, String author, int year, int assignedto) {
+    public Book(int id, String title, String author, int year) {
         this.id = id;
         this.title = title;
         this.author = author;
         this.year = year;
-        this.assignedto = assignedto;
     }
 
     public int getId() {
@@ -50,11 +61,11 @@ public class Book {
         this.year = year;
     }
 
-    public int getAssignedto() {
+    public Person getAssignedto() {
         return assignedto;
     }
 
-    public void setAssignedto(int assignedto) {
+    public void setAssignedto(Person assignedto) {
         this.assignedto = assignedto;
     }
 

@@ -74,15 +74,21 @@
       <version>8.0.0.Final</version>
     </dependency>
     <dependency>
-      <groupId>org.hibernate.orm</groupId>
+      <groupId>org.hibernate</groupId>
       <artifactId>hibernate-core</artifactId>
-      <version>6.1.3.Final</version>
+      <version>5.4.28.Final</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-orm</artifactId>
       <version>${spring.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.springframework.data</groupId>
+      <artifactId>spring-data-jpa</artifactId>
+      <version>2.7.3</version>
+    </dependency>
+
 
   </dependencies>
 
@@ -126,8 +132,8 @@
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-compiler-plugin</artifactId>
               <configuration>
-                  <source>8</source>
-                  <target>8</target>
+                  <source>9</source>
+                  <target>9</target>
               </configuration>
           </plugin>
       </plugins>

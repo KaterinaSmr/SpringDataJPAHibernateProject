@@ -1,9 +1,22 @@
 package ru.springcourse.models;
 
+import javax.persistence.*;
+
+import java.util.List;
+
+@Entity
+@Table(name="person")
 public class Person {
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(name="name")
     private String name;
+    @Column(name="year")
     private int year;
+    @OneToMany(mappedBy = "assignedto", fetch = FetchType.EAGER)
+    private List<Book> books;
 
     public Person() {
     }
@@ -36,6 +49,14 @@ public class Person {
 
     public void setYear(int year) {
         this.year = year;
+    }
+
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<Book> books) {
+        this.books = books;
     }
 
     @Override

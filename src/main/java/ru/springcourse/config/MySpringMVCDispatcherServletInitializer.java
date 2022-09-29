@@ -6,7 +6,7 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
-public class MySpringMVCServletDispatecherInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+public class MySpringMVCDispatcherServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
     protected Class<?>[] getRootConfigClasses() {
         return null;
@@ -22,14 +22,15 @@ public class MySpringMVCServletDispatecherInitializer extends AbstractAnnotation
         return new String[]{"/"};
     }
 
-    private void registerHiddenFieldFilter(ServletContext aContext){
-        aContext.addFilter("hiddenHttpMethodFilter",
-                new HiddenHttpMethodFilter()).addMappingForUrlPatterns(null, true, "*");
+    @Override
+    public void onStartup(ServletContext aServletContext) throws ServletException {
+        super.onStartup(aServletContext);
+//        registerCharacterEncodingFilter(aServletContext);
+        registerHiddenFieldFilter(aServletContext);
     }
 
-    @Override
-    public void onStartup(ServletContext aServletContext) throws ServletException{
-        super.onStartup(aServletContext);
-        registerHiddenFieldFilter(aServletContext);
+    private void registerHiddenFieldFilter(ServletContext aContext) {
+        aContext.addFilter("hiddenHttpMethodFilter",
+                new HiddenHttpMethodFilter()).addMappingForUrlPatterns(null ,true, "/*");
     }
 }
