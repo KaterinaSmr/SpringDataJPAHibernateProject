@@ -1,6 +1,8 @@
 package ru.springcourse.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.springcourse.models.Book;
@@ -18,12 +20,26 @@ public class BooksService {
     public BooksService(BooksRepository booksRepository) {
         this.booksRepository = booksRepository;
     }
-    public List<Book> findAll(){
-        return booksRepository.findAll();
+    public List<Book> findAll(boolean sort){
+        if (sort){
+            return booksRepository.findAll(Sort.by("year"));
+        } else {
+            return booksRepository.findAll();
+        }
+    }
+    public List<Book> findAll(int page, int itemsPerPage, boolean sort){
+        if (sort) {
+            return booksRepository.findAll(PageRequest.of(page, itemsPerPage, Sort.by("year"))).getContent();
+        } else {
+            return booksRepository.findAll(PageRequest.of(page, itemsPerPage)).getContent();
+        }
     }
     public Book findOne(int id){
         Optional<Book> optionalBook = booksRepository.findById(id);
         return optionalBook.orElse(null);
+    }
+    public List<Book> findByTitleContaining(String text){
+        return booksRepository.findByTitleContaining(text);
     }
     @Transactional
     public void save(Book book){

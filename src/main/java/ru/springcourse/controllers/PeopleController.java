@@ -3,13 +3,9 @@ package ru.springcourse.controllers;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.springcourse.models.Book;
 import ru.springcourse.models.Person;
 import ru.springcourse.services.BooksService;
 import ru.springcourse.services.PeopleService;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Controller

@@ -9,7 +9,6 @@ import ru.springcourse.models.Person;
 import ru.springcourse.services.BooksService;
 import ru.springcourse.services.PeopleService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -25,8 +24,19 @@ public class BooksController {
     }
 
     @GetMapping("")
-    public String index(Model model){
-        model.addAttribute("books", booksService.findAll());
+    public String index(@RequestParam(name = "page", required = false) Integer page,
+                        @RequestParam(name="books_per_page", required = false) Integer booksPerPage,
+                        @RequestParam(name="sort_by_year", required = false) Boolean sort, Model model){
+        if (sort == null){
+            sort = false;
+        }
+        List<Book> books;
+        if (booksPerPage != null && page != null){
+            books = booksService.findAll(page, booksPerPage, sort);
+        } else {
+           books = booksService.findAll(sort);
+        }
+        model.addAttribute("books", books);
         return "books/index";
     }
     @GetMapping("/{id}")
@@ -74,6 +84,19 @@ public class BooksController {
     public String release(@PathVariable("id") int id){
         booksService.release(id);
         return "redirect:/books/" + id;
+    }
+
+    @GetMapping("/search")
+    public String search(){
+        return "books/search";
+    }
+    @GetMapping(value = "/search", params = "text")
+    public String searchResult(@RequestParam("text") String text, Model model){
+        System.out.println("Parameter text : " + text);
+        List<Book> books = booksService.findByTitleContaining(text);
+        System.out.println("Books: " + books);
+        model.addAttribute("books", books);
+        return "books/search";
     }
 
 }

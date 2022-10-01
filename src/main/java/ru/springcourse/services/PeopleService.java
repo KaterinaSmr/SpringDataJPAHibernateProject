@@ -1,5 +1,6 @@
 package ru.springcourse.services;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,7 @@ public class PeopleService {
     }
     public Person findOne(int id){
         Optional<Person> foundPerson = peopleRepository.findById(id);
+        foundPerson.ifPresent(person -> Hibernate.initialize(person.getBooks()));
         return foundPerson.orElse(null);
     }
     @Transactional

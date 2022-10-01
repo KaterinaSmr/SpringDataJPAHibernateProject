@@ -15,7 +15,7 @@ public class Person {
     private String name;
     @Column(name="year")
     private int year;
-    @OneToMany(mappedBy = "assignedto", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "assignedto")
     private List<Book> books;
 
     public Person() {

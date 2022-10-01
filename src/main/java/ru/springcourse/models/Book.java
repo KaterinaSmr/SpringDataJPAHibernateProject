@@ -1,6 +1,8 @@
 package ru.springcourse.models;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Table(name = "book")
@@ -18,6 +20,11 @@ public class Book {
     @ManyToOne
     @JoinColumn(name="assignedto", referencedColumnName = "id")
     private Person assignedto;
+    @Column(name="taken_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date takenAt;
+    @Transient
+    private boolean overdue;
 
     public Book() {
     }
@@ -67,6 +74,37 @@ public class Book {
 
     public void setAssignedto(Person assignedto) {
         this.assignedto = assignedto;
+        if (assignedto == null){
+            this.setTakenAt(null);
+            this.setOverdue(false);
+        } else {
+            this.setTakenAt(new Date());
+            this.setOverdue(false);
+        }
+    }
+
+    public Date getTakenAt() {
+        return takenAt;
+    }
+
+    public void setTakenAt(Date takenAt) {
+        this.takenAt = takenAt;
+    }
+
+    public boolean isOverdue() {
+        if (getTakenAt() == null) {
+            setOverdue(false);
+            return overdue;
+        }
+        LocalDate dateTaken = new java.sql.Date(getTakenAt().getTime()).toLocalDate();
+        LocalDate dateOverdue = dateTaken.plusDays(10);
+        overdue = dateOverdue.isBefore(LocalDate.now());
+        System.out.println(dateTaken + " isOverdue? " + overdue);
+        return overdue;
+    }
+
+    public void setOverdue(boolean overdue) {
+        this.overdue = overdue;
     }
 
     @Override
